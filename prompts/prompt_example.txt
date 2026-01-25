@@ -1,0 +1,13 @@
+Concrete examples:
+
+Add a testimonial card
+Action: "Add a testimonial-card component to index.html inside the hero column (below profile). Use colors from repo-context.json.designTokens.colors, create CSS rules appended to index_styles.css, and no JS required. Ensure accessible markup (role='article', aria-label). Return an apply_patch to update index.html and index_styles.css."
+Switch layout variant
+Action: "Change layout to two-column-aside (from repo-context.json.layoutVariants) on index.html: make the projects section a left column and a persistent aside on right. Update markup, adjust grid CSS in index_styles.css, and add a short notes entry to repo-context.json describing the change. Return patches."
+Add project data source
+Action: "Create data/projects.json with my two projects listed, then update index.html to render projects from that JSON (keep a static fallback). Add a short script in index_js.js to fetch and render. Return patches and a brief integration note in repo-context.json."
+Quick tips:
+
+Mention exact breakpoints or behaviors you care about (e.g., mobile-first, collapse to one column at 880px).
+If you want me to edit files directly, say “apply_patch” or “edit files” and I’ll produce the patch.
+If you add a new token (color/spacing), ask me to update both index_styles.css and repo-context.json.

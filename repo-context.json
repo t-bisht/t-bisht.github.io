@@ -1,0 +1,56 @@
+{
+  "name": "tusharbisht.github.io",
+  "description": "Personal site: public-facing `index.html` showing profile, projects, and blog links. Modern, professional aesthetic with layouts that may change frequently.",
+  "publicEntry": "index.html",
+  "intent": {
+    "primary": "Provide a concise public profile, project showcases, and links to writing.",
+    "audience": ["recruiters","peers","potential collaborators","readers"],
+    "tone": "modern, professional, minimal",
+    "layoutFlexibility": "High — components and layouts may be rearranged or swapped frequently. Keep content and tokens decoupled from markup."
+  },
+  "designTokens": {
+    "colors": {
+      "bg": "#f6f8fa",
+      "card": "#ffffff",
+      "text": "#0f1724",
+      "muted": "#6b7280",
+      "accent": "#2563eb"
+    },
+    "radius": "12px",
+    "containerMax": 1100,
+    "shadow": "0 8px 24px rgba(15,23,36,0.06)"
+  },
+  "layoutVariants": [
+    "single-column", "two-column-aside", "feature-hero"
+  ],
+  "components": ["header","hero","profile-card","projects-grid","project-card","footer","theme-toggle"],
+  "contentSources": {
+    "projects": "static in HTML or later move to data/projects.json",
+    "blogs": "external links to platforms (Medium/Dev.to) or future local /posts/ folder",
+    "meta": "repo-context.json / README.md"
+  },
+  "templates": {
+    "recommended": "Eleventy (lightweight static templates) or simple partial includes",
+    "reason": "Allows changing layout/partials without manual edits to `index.html` each time"
+  },
+  "devWorkflow": {
+    "branching": "feature/* for design changes",
+    "pullRequests": "Use PRs with preview deploys",
+    "commits": "Conventional Commits suggested",
+    "preview": "Vercel or Netlify for branch previews"
+  },
+  "filesOfInterest": {
+    "html": "index.html",
+    "styles": "css/index_styles.css",
+    "scripts": "js/index_js.js",
+    "context": "repo-context.json",
+    "docs": "docs/ (recommended)"
+  },
+  "howToChangeLayout": "Centralize design tokens and move repeated markup into templates/partials. Keep small `data/` files for projects and blog links so `index.html` becomes a renderer of content + templates.",
+  "lastUpdated": "2026-01-26",
+  "contact": {
+    "author": "Tushar Bisht",
+    "email": "youremail@example.com"
+  },
+  "notes": "Store this file at repo root. CI or local scripts can read `repo-context.json` to generate previews or enforce token consistency."
+}
