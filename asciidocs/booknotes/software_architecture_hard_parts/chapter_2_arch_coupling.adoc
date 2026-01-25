@@ -41,7 +41,8 @@
 
 === Measurement
 
-stem:[I = (Ce) / (Ca + Ce)]
+// stem:[I = (Ce) / (Ca + Ce)]
+image::./images/img.png[]
 
 [NOTE]
 ====
@@ -54,6 +55,13 @@ stem:[I = (Ce) / (Ca + Ce)]
 * I ~ 1 : Unstable system
 ====
 
+[plantuml]
+----
+@startuml
+    : hello here;
+    : hello there;
+@enduml
+----
 
 
 

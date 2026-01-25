@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="css/index_styles.css">
+    <link rel="stylesheet" href="css/index_styles.css">
 </head>
 <body>
 <a class="skip" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip
@@ -34,50 +34,86 @@
             <a class="btn primary" href="mailto:youremail@example.com">Contact</a>
         </div>
     </div>
-
-    <div class="hero">
-        <div class="card profile">
-            <div>
-                <h1>Hi, I’m Tushar <span aria-hidden="true">👋</span></h1>
-                <p class="subtitle">Designing reliable data systems and intuitive frontends for complex problems.</p>
-            </div>
-
-            <div>
-                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-                    <a class="btn" href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
-                    <a class="btn" href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a class="btn" href="#projects">Projects</a>
-                </div>
-            </div>
-
-            <div>
-                <h3 style="margin:8px 0 6px">Skills</h3>
-                <div class="skills">
-                    <span class="pill">Python</span>
-                    <span class="pill">BigQuery</span>
-                    <span class="pill">React</span>
-                    <span class="pill">SQL</span>
-                    <span class="pill">Cloud</span>
-                </div>
-            </div>
-        </div>
-
-        <aside class="card" aria-labelledby="about-heading">
-            <h2 id="about-heading" style="margin-top:0">About</h2>
-            <p style="margin:8px 0;color:var(--muted)">
-                Software engineer focused on data systems, cloud platforms, and building clean, intuitive interfaces for
-                complex problems.
-                I enjoy working at the intersection of engineering, data, and design.
-            </p>
-            <div style="margin-top:10px;font-size:.95rem;color:var(--muted)">
-                <div><strong class="highlight">Open to:</strong> Full-time roles, contracting</div>
-                <div style="margin-top:8px"><strong class="highlight">Location:</strong> Remote / India</div>
-            </div>
-        </aside>
-    </div>
+    <!-- hero moved into main 'About' section -->
 </header>
 
 <main id="main">
+    <section id="about" class="container">
+        <div class="hero">
+            <div class="card profile">
+                <div>
+                    <h1>Hi, I’m Tushar <span aria-hidden="true">👋</span></h1>
+                    <p class="subtitle">Designing reliable data systems and intuitive frontends for complex
+                        problems.</p>
+                </div>
+
+                <div>
+                    <h3 style="margin:8px 0 6px">Skills</h3>
+                    <div class="skills">
+                        <span class="pill">Python</span>
+                        <span class="pill">BigQuery</span>
+                        <span class="pill">React</span>
+                        <span class="pill">SQL</span>
+                        <span class="pill">Cloud</span>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="card contact" aria-labelledby="about-heading">
+                <h2 id="about-heading" style="margin-top:0">About</h2>
+                <p style="margin:8px 0;color:var(--muted)">
+                    Software engineer focused on data systems, cloud platforms, and building clean, intuitive interfaces
+                    for complex problems. I enjoy working at the intersection of engineering, data, and design.
+                </p>
+                <div style="margin-top:10px;font-size:.95rem;color:var(--muted)">
+                    <div><strong class="highlight">Open to:</strong> Full-time roles, contracting</div>
+                    <div style="margin-top:8px"><strong class="highlight">Location:</strong> Remote / India</div>
+                </div>
+
+                <div style="margin-top:12px">
+                    <h4 style="margin:8px 0">Connect</h4>
+                    <div class="social-links" role="navigation" aria-label="Social links">
+                        <a class="btn" href="https://github.com/your-username" target="_blank" rel="noopener noreferrer"
+                           aria-label="GitHub">
+                            <!-- GitHub SVG -->
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                            </svg>
+                            <span style="margin-left:8px">GitHub</span>
+                        </a>
+
+                        <a class="btn" href="https://linkedin.com/in/your-handle" target="_blank"
+                           rel="noopener noreferrer" aria-label="LinkedIn">
+                            <!-- LinkedIn SVG -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4zM9 8h3.8v2.2h.1c.5-.9 1.8-1.8 3.7-1.8 4 0 4.7 2.6 4.7 6V24h-4v-7.2c0-1.7 0-3.9-2.4-3.9-2.4 0-2.8 1.9-2.8 3.8V24H9z"></path>
+                            </svg>
+                            <span style="margin-left:8px">LinkedIn</span>
+                        </a>
+
+                        <a class="btn" href="https://yourblog.wordpress.com" target="_blank" rel="noopener noreferrer"
+                           aria-label="WordPress">
+                            <!-- Blog / WordPress SVG (generic) -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm4.46 7.21c.31.62.54 1.3.67 1.99H7.87c.14-.66.39-1.31.74-1.92 1.29-2.25 2.67-3.32 4.72-3.32 1.85 0 3 .88 3.17 3.25zM6.23 15.1c-.24-.47-.42-1-.54-1.53h10.62c-.1.55-.27 1.08-.5 1.56-.95 1.86-3.01 2.86-5.58 2.86-2.56 0-4.36-.87-4.99-2.89zM12 4.5c-1.26 0-2.26.57-3.12 1.77-.34.47-.62 1-.84 1.53h7.91c-.21-.55-.5-1.08-.85-1.56C14.23 5.07 13.27 4.5 12 4.5z"></path>
+                            </svg>
+                            <span style="margin-left:8px">Blog</span>
+                        </a>
+
+                        <a class="btn" href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer"
+                           aria-label="X">
+                            <!-- X / Twitter SVG -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M23 3.01a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.98-2.48 9.06 9.06 0 01-2.86 1.1A4.52 4.52 0 0016.11 2c-2.5 0-4.52 2.01-4.52 4.5 0 .35.04.7.12 1.03A12.83 12.83 0 013 3.15a4.48 4.48 0 00-.61 2.27c0 1.56.8 2.94 2.02 3.74a4.5 4.5 0 01-2.05-.56v.06c0 2.18 1.53 4 3.56 4.41-.37.1-.76.16-1.16.16-.28 0-.56-.03-.83-.08.56 1.74 2.18 2.98 4.1 3.01A9.07 9.07 0 012 19.54 12.8 12.8 0 008.29 21c7.55 0 11.7-6.48 11.7-12.1 0-.18-.01-.36-.02-.54A8.6 8.6 0 0023 3.01z"></path>
+                            </svg>
+                            <span style="margin-left:8px">X</span>
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+
     <section id="projects" class="container">
         <h2>Projects</h2>
         <div class="projects-grid" role="list">
@@ -101,13 +137,24 @@
         </div>
     </section>
 
-    <section class="container">
-        <h2>Writing</h2>
+    <section id="blogs" class="container">
+        <h2>Writing & Blogs</h2>
+        <p style="color:var(--muted)">Here are places I publish writing and essays — I'll keep this list updated as
+            posts go live.</p>
         <ul class="links">
             <li><a class="link" href="https://medium.com/@your-handle" target="_blank" rel="noopener noreferrer">Medium
                 Blog</a></li>
             <li><a class="link" href="https://dev.to/your-handle" target="_blank" rel="noopener noreferrer">Dev.to
                 Articles</a></li>
+            <li><a class="link" href="https://yourblog.wordpress.com" target="_blank" rel="noopener noreferrer">WordPress
+                / Personal Blog</a></li>
+            <li>
+                <a class="link" href="/blogs/chapter_2.html" target="_self" rel="noopener">Coupling in Software
+                    Architectures</a>
+                <div style="color:var(--muted);font-size:.95rem">An essay on coupling, cohesion and practical patterns
+                    for reducing accidental coupling.
+                </div>
+            </li>
         </ul>
     </section>
 </main>

@@ -97,3 +97,15 @@ footer.footer{display:flex;justify-content:space-between;align-items:center;gap:
   .projects-grid{grid-template-columns:1fr}
   .avatar{width:48px;height:48px}
 }
+
+/* Section & social link additions */
+.hero{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
+.contact .social-links{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.social-links .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px}
+.social-links svg{display:inline-block;flex:0 0 16px}
+
+@media (max-width:880px){
+  .hero{grid-template-columns:1fr}
+  .contact .social-links{flex-direction:row;flex-wrap:wrap}
+  .social-links .btn{padding:6px 8px}
+}
