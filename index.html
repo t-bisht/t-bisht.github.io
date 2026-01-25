@@ -1,78 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Tushar Bisht — Software Engineer</title>
-
-    <!-- Google Font -->
+    <meta name="description"
+          content="Tushar Bisht — software engineer building data platforms, dashboards and thoughtful software."/>
+    <meta name="theme-color" content="#0f1724"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/styles.css"/>
+    <style>
+        :root{
+          --bg:#f7fafc; --card:#ffffff; --muted:#6b7280; --accent:#0ea5e9; --glass: rgba(255,255,255,0.6);
+          --radius:12px; --container:1100px;
+        }
+        [data-theme="dark"]{
+          --bg:#071029; --card:#071428; --muted:#9ca3af; --accent:#38bdf8; --glass: rgba(255,255,255,0.03);
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+          margin:0;
+          font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          background: radial-gradient(1200px 400px at 10% 10%, rgba(56,189,248,0.06), transparent),
+                      radial-gradient(800px 300px at 90% 90%, rgba(99,102,241,0.04), transparent),
+                      var(--bg);
+          color: #0b1220;
+          -webkit-font-smoothing:antialiased;
+          -moz-osx-font-smoothing:grayscale;
+          padding:48px 20px;
+          transition:background .25s ease, color .25s ease;
+        }
+        header.container, section.container, footer.container{
+          max-width:var(--container);
+          margin:0 auto 28px;
+          padding:20px;
+        }
+        .topbar{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:16px;
+          margin-bottom:18px;
+        }
+        .brand{display:flex;align-items:center;gap:12px}
+        .avatar{
+          width:56px;height:56px;border-radius:12px;flex:0 0 56px;
+          background:linear-gradient(135deg,var(--accent),#7c3aed);
+          display:grid;place-items:center;color:white;font-weight:700;
+          box-shadow:0 6px 20px rgba(2,6,23,0.08);
+        }
+        h1{margin:0;font-size:clamp(1.4rem,4vw,2rem)}
+        .subtitle{margin:6px 0 0;color:var(--muted);font-size:0.98rem}
+        .controls{display:flex;gap:8px;align-items:center}
+        .btn{
+          background:transparent;border:1px solid rgba(11,18,32,0.06);padding:8px 12px;border-radius:10px;
+          font-weight:600;color:inherit;cursor:pointer;
+          backdrop-filter: blur(6px);
+        }
+        .btn.primary{
+          background:linear-gradient(90deg,var(--accent),#7c3aed);
+          color:white;border:0;box-shadow:0 6px 18px rgba(2,6,23,0.08);
+        }
+        .hero{
+          display:grid;
+          grid-template-columns:1fr 320px;
+          gap:28px;
+          align-items:center;
+          margin-bottom:26px;
+        }
+        .card{
+          background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+          border-radius:var(--radius); padding:18px; box-shadow:0 8px 30px rgba(2,6,23,0.06);
+          border:1px solid rgba(11,18,32,0.04);
+        }
+        .profile{
+          display:flex;flex-direction:column;gap:12px;
+        }
+        .highlight{color:var(--accent);font-weight:700}
+        .skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+        .pill{font-size:.85rem;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);border:1px solid rgba(11,18,32,0.04)}
+        .projects-grid{
+          display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:12px;
+        }
+        .project h3{margin:0 0 6px;font-size:1rem}
+        .project p{margin:0;color:var(--muted);font-size:.95rem}
+        .project .meta{margin-top:8px;font-size:.85rem;color:var(--muted)}
+        a.link{color:var(--accent);text-decoration:none;font-weight:600}
+        ul.links{padding-left:18px;margin:10px 0;color:var(--muted)}
+        footer.footer{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px;border-top:1px solid rgba(11,18,32,0.04)}
+        .footer a{color:var(--muted);text-decoration:none;padding:6px 8px;border-radius:8px}
+        .footer a:hover{background:var(--glass)}
+        @media (max-width:880px){
+          .hero{grid-template-columns:1fr;align-items:start}
+          .projects-grid{grid-template-columns:1fr}
+          .avatar{width:48px;height:48px}
+        }
+    </style>
 </head>
 <body>
+<a class="skip" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip
+    to content</a>
 
-<!-- Header -->
 <header class="container">
-    <h1>Hi, I’m Tushar 👋</h1>
-    <p class="subtitle">
-        I build data platforms, dashboards, and thoughtful software.
-    </p>
+    <div class="topbar">
+        <div class="brand" aria-hidden="true">
+            <div class="avatar">TB</div>
+            <div>
+                <div style="display:flex;align-items:baseline;gap:8px">
+                    <div style="font-weight:700">Tushar Bisht</div>
+                    <div style="color:var(--muted);font-size:.9rem">Software Engineer</div>
+                </div>
+                <div class="subtitle">I build data platforms, dashboards, and thoughtful software.</div>
+            </div>
+        </div>
+
+        <div class="controls" role="toolbar" aria-label="site controls">
+            <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode">Toggle Theme</button>
+            <a class="btn primary" href="mailto:youremail@example.com">Contact</a>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="card profile">
+            <div>
+                <h1>Hi, I’m Tushar <span aria-hidden="true">👋</span></h1>
+                <p class="subtitle">Designing reliable data systems and intuitive frontends for complex problems.</p>
+            </div>
+
+            <div>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+                    <a class="btn" href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a class="btn" href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a class="btn" href="#projects">Projects</a>
+                </div>
+            </div>
+
+            <div>
+                <h3 style="margin:8px 0 6px">Skills</h3>
+                <div class="skills">
+                    <span class="pill">Python</span>
+                    <span class="pill">BigQuery</span>
+                    <span class="pill">React</span>
+                    <span class="pill">SQL</span>
+                    <span class="pill">Cloud</span>
+                </div>
+            </div>
+        </div>
+
+        <aside class="card" aria-labelledby="about-heading">
+            <h2 id="about-heading" style="margin-top:0">About</h2>
+            <p style="margin:8px 0;color:var(--muted)">
+                Software engineer focused on data systems, cloud platforms, and building clean, intuitive interfaces for
+                complex problems.
+                I enjoy working at the intersection of engineering, data, and design.
+            </p>
+            <div style="margin-top:10px;font-size:.95rem;color:var(--muted)">
+                <div><strong class="highlight">Open to:</strong> Full-time roles, contracting</div>
+                <div style="margin-top:8px"><strong class="highlight">Location:</strong> Remote / India</div>
+            </div>
+        </aside>
+    </div>
 </header>
 
-<!-- About -->
-<section class="container">
-    <h2>About</h2>
-    <p>
-        I’m a software engineer focused on data systems, cloud platforms,
-        and building clean, intuitive interfaces for complex problems.
-        I enjoy working at the intersection of engineering, data, and design.
-    </p>
-</section>
+<main id="main">
+    <section id="projects" class="container">
+        <h2>Projects</h2>
+        <div class="projects-grid" role="list">
+            <article class="card project" role="listitem">
+                <h3>📊 Investment Insights Platform</h3>
+                <p>A dashboard that tracks mutual funds and equities by analyzing portfolio disclosures and sector
+                    allocations.</p>
+                <div class="meta">Tech: Python · BigQuery · React</div>
+                <div style="margin-top:10px"><a class="link" href="https://github.com/your-username/project-repo"
+                                                target="_blank" rel="noopener noreferrer">View Project →</a></div>
+            </article>
 
-<!-- Projects -->
-<section class="container">
-    <h2>Projects</h2>
+            <article class="card project" role="listitem">
+                <h3>⚙️ Data Pipeline Test Framework</h3>
+                <p>Regression testing framework for validating data pipelines using configuration-driven test
+                    definitions.</p>
+                <div class="meta">Tech: Python · SQL · Cloud Storage</div>
+                <div style="margin-top:10px"><a class="link" href="https://github.com/your-username/project-repo"
+                                                target="_blank" rel="noopener noreferrer">View Project →</a></div>
+            </article>
+        </div>
+    </section>
 
-    <div class="card">
-        <h3>📊 Investment Insights Platform</h3>
-        <p>
-            A dashboard that tracks mutual funds and equities by analyzing
-            portfolio disclosures and sector allocations.
-        </p>
-        <p class="tech">Tech: Python, BigQuery, React</p>
-        <a href="https://github.com/your-username/project-repo" target="_blank">View Project →</a>
-    </div>
+    <section class="container">
+        <h2>Writing</h2>
+        <ul class="links">
+            <li><a class="link" href="https://medium.com/@your-handle" target="_blank" rel="noopener noreferrer">Medium
+                Blog</a></li>
+            <li><a class="link" href="https://dev.to/your-handle" target="_blank" rel="noopener noreferrer">Dev.to
+                Articles</a></li>
+        </ul>
+    </section>
+</main>
 
-    <div class="card">
-        <h3>⚙️ Data Pipeline Test Framework</h3>
-        <p>
-            A regression testing framework for validating data pipelines using
-            configuration-driven test definitions.
-        </p>
-        <p class="tech">Tech: Python, SQL, Cloud Storage</p>
-        <a href="https://github.com/your-username/project-repo" target="_blank">View Project →</a>
-    </div>
-
-</section>
-
-<!-- Blog -->
-<section class="container">
-    <h2>Writing</h2>
-    <ul>
-        <li><a href="https://medium.com/@your-handle" target="_blank">Medium Blog</a></li>
-        <li><a href="https://dev.to/your-handle" target="_blank">Dev.to Articles</a></li>
-    </ul>
-</section>
-
-<!-- Footer -->
 <footer class="container footer">
-    <a href="https://github.com/your-username" target="_blank">GitHub</a>
-    <a href="https://linkedin.com/in/your-handle" target="_blank">LinkedIn</a>
-    <a href="mailto:youremail@example.com">Email</a>
+    <div style="display:flex;gap:12px;align-items:center">
+        <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="mailto:youremail@example.com">Email</a>
+    </div>
+    <div style="color:var(--muted);font-size:.9rem">© <span id="year"></span> Tushar Bisht</div>
 </footer>
 
+<script>
+    (function(){
+      const root = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const init = saved || (prefersDark ? 'dark' : 'light');
+      root.setAttribute('data-theme', init);
+      btn.setAttribute('aria-pressed', init === 'dark');
+
+      btn.addEventListener('click', () => {
+        const current = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', current);
+        btn.setAttribute('aria-pressed', current === 'dark');
+        localStorage.setItem('theme', current);
+      });
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    })();
+</script>
 </body>
 </html>
