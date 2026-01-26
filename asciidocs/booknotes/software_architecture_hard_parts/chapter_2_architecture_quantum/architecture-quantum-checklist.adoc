@@ -1,0 +1,138 @@
+= Architecture Quantum & Coupling Review Checklist
+:toc:
+:toclevels: 2
+:icons: font
+:sectnums:
+
+Use this checklist during *architecture reviews, refactors, or before splitting into microservices*.
+Unclear answers are signals — not failures.
+
+== System Context
+
+* *System Name:* 
+* *Review Date:* 
+* *Team(s):* 
+* *Reviewer(s):* 
+* *Current Architecture:* (Monolith / Modular Monolith / Microservices)
+
+== 1. Architecture Quantum Assessment
+_What must move together?_
+
+For each capability (A, B, C…), answer YES or NO.
+
+=== Deployment
+* [ ] Can this capability be deployed independently?
+* [ ] Can it be rolled back independently?
+
+=== Data
+* [ ] Does it own its data exclusively?
+* [ ] Can its schema evolve without coordination?
+
+=== Runtime
+* [ ] Can it fail without taking others down?
+* [ ] Can it scale independently?
+
+[IMPORTANT]
+====
+If *any* answer above is NO, the components belong to the *same architecture quantum*.
+====
+
+== 2. Quantum of Coupling Analysis
+_Why are components forced together?_
+
+Check all that apply:
+
+* [ ] Shared database or schema
+* [ ] Cross-module transactions
+* [ ] In-process method calls
+* [ ] Unversioned APIs
+* [ ] Implicit data contracts
+* [ ] Shared CI/CD pipeline
+* [ ] Shared configuration or secrets
+
+*Dominant coupling causes / notes:*
+
+----
+(Add notes here)
+----
+
+== 3. Instability Placement Check
+_Is change pressure in the right place?_
+
+[cols="1,1,1,1,1", options="header"]
+|===
+| Module | Depends On (Ce) | Depended By (Ca) | Changes Often? | Instability Placement OK?
+| UI |  |  |  | 
+| Core Domain |  |  |  | 
+| Application Layer |  |  |  | 
+| Infrastructure |  |  |  | 
+|===
+
+[WARNING]
+====
+High *instability* combined with high *afferent coupling* is a strong design smell.
+====
+
+== 4. UI / Edge Layer Sanity Check
+_Is volatility leaking inward?_
+
+* [ ] UI contains business rules
+* [ ] Backend refactors frequently break UI
+* [ ] UI changes force backend redeploys
+
+If any are checked, coupling direction may be inverted.
+
+== 5. Release & Coordination Friction
+_Where does it hurt today?_
+
+* [ ] Releases require cross-team coordination
+* [ ] Unrelated changes block each other
+* [ ] Rollbacks are system-wide and risky
+* [ ] Teams wait on schema or contract changes
+
+*Concrete examples of friction:*
+
+----
+(Add examples here)
+----
+
+== 6. Quantum Split Justification
+_Only consider a split if ALL are true:_
+
+* [ ] Independent rate of change exists
+* [ ] Coordination cost is recurring and measurable
+* [ ] Clear ownership boundary exists
+* [ ] Data ownership can be enforced
+* [ ] Stable contract can be defined
+
+[CAUTION]
+====
+If any item above is unchecked, *do not split the quantum yet*.
+====
+
+== 7. Microservices Reality Check
+_Avoid distributed monoliths._
+
+* [ ] No shared database
+* [ ] Explicit, versioned APIs
+* [ ] Backward compatibility strategy
+* [ ] Observability (logs, metrics, tracing)
+* [ ] Failure isolation
+
+== 8. Team Alignment
+_Does architecture match communication?_
+
+* [ ] Each quantum maps to a team
+* [ ] Teams can deploy without coordination
+* [ ] Cognitive load is manageable
+
+== 9. Decision Summary
+
+* *Current number of architecture quanta:* 
+* *Recommended action:* (Keep as-is / Reduce coupling / Split quantum)
+* *Primary reason:* 
+
+[quote]
+____
+Golden Rule: Split quanta only when *coordination cost exceeds operational cost*.
+____

@@ -1,0 +1,323 @@
+:sectnums:
+:toc:
+
+= Architecture Coupling
+
+== Introduction
+
+* Coupling :
+** Two software modules or subsystems are coupled (tightly or loosely) if changes in module 1 impacts module 2 or vice versa
+** Coupling arises (or is reduced) by bounded context based domain driven design
+** Coupling is one of the aspects defined and resolved using https://en.wikipedia.org/wiki/Architecture_tradeoff_analysis_method[Architecture Tradeoff Analysis Method] (ATAM)]
+
+[NOTE]
+====
+* https://www.martinfowler.com/bliki/BoundedContext.html[Frowler definition of Bounded Context]
+* https://martinfowler.com/bliki/DomainDrivenDesign.html[Frowler link to DDD]
+====
+
+* Trade-off analysis in architecture design choice using coupling
+** Find coupling
+** Analyze dependency and reason for coupling
+** Determine impact of change
+
+* Architectural Quantum
+** Independent deployable artifact
+** High functional cohesion
+** High static coupling
+*** Measure of static dependencies like OS, frameworks , libraries
+** Synchronous dynamic coupling
+*** Communications at run time - synchronous, asynchronous with other modules, software or engines
+*** Generally also deducted using architectural fitness function
+
+[NOTE]
+====
+* Need to study about architectural fitness function
+** How are they implemented and measured?
+
+====
+
+== Quanta
+
+=== Definition & Notes
+
+* Smallest independently evolving unit
+* You split one quantum into multiple quanta
+
+* In design of quantum 1 , there is a tight change coupling, sys A change results in change of sys B
+
+* For multi quanta design
+** Separate dashed boxes
+** Separate deployment pipelines
+** Possibly separate databases
+** No mandatory synchronized release
+
+=== What defining quanta leads to
+
+* how fast different parts change
+* how independently teams need to move
+* how much risk you want to isolate
+
+===  Change autonomy
+
+Can teams make progress without waiting?
+
+* If yes → current quantum is fine
+* If no → quantum is too big
+
+=== Cognitive load
+
+How much of the system must you understand to make a safe change?
+
+* If “almost everything” → quantum may be too large
+* If “just my bounded context” → good fit
+
+=== Risk containment
+
+Does a failure or rollback in one area take down unrelated capabilities?
+
+* If yes → quantum too large
+* If no → good isolation
+
+=== Quanta decision matrix
+
+decision matrix
+
+Ask this before touching architecture:
+
+|====
+|Signal    | What it means
+| Frequent merge conflicts across modules | Quantum too large
+| Teams blocking each other for releases | Quantum too large
+| Schema changes cause org-wide coordination | Quantum too large
+| Ops burden is already high | Don’t split yet
+| Domain logic moves together |  Keep quantum 1
+|====
+
+=== Mental quantum test
+
+For module A, can you do all of the following without coordinating with B and C?
+
+* Change A’s data model without impacting B or C
+* Version A independently
+* Deploy A while B and C remain on an older version
+* Roll back A without rolling back B and C
+* Scale A independently
+* Guarantee that A’s failure cannot take down B or C
+
+=== Examples
+
+==== Monolith architecture with quantum 1
+
+image::./images/chapter_2/monolith_quantum_1.png[]
+
+* Layered Monolith
+** All components (service + database) have to be deployed together
+** A change in business logic often impacts data
+** Data schema changes ripple upward
+** You deploy the whole thing together
+
+
+* Modular Monolith
+** Since the components share database they have dependency due to the data model (Share data)
+
+* Micro Kernel
+** Core kernel and plugin have a dependency on the core kernel deployment
+
+== Using metrics to change Quanta
+
+* Software Instability metric can help in identifying impact of changes inside a quanta
+* This helps in following ways
+** When in monolith, use this to divide monolith into multiple quanta
+** When designing multi quanta system, use this to identify coupling between quanta and reduce it (lower the better !!)
+
+=== Instability
+
+* “Place instability where change is expected, and stability where responsibility is high.”
+* Instability answers ONE question: “How easy is it for this module to change without hurting others?”
+
+** High I = easy to change
+
+** Low I = hard to change (by design)
+
+** Neither is “good” or “bad” in isolation.
+
+=== Instability Measurement
+
+image::./images/img.png[]
+
+[NOTE]
+====
+* I = Software instability
+* Ca = Afferent couplings
+** Incoming dependencies
+** How many things would break if I change this module ?
+* Ce = Efferent couplings
+** Outgoing dependencies
+** How many external things can break this module ?
+
+* I ~ 0 : Stable system
+* I ~ 1 : Unstable system
+====
+
+=== Instability Examples
+
+==== Example A: Core domain module (Orders)
+
+Ca = 20 (many depend on it) Ce = 1
+
+𝐼 = 1/21 ≈ 0.05
+
+* Very stable
+* Should change rarely
+* Needs strong backward compatibility
+
+* Inferences
+
+** Changes are risky
+
+** Must evolve carefully
+
+** Needs strong contracts
+
+==== Example B: UI module
+
+* Premise
+
+** one application with these modules
+*** UI
+*** Order Service
+*** Payment Service
+*** Inventory Service
+
+** This is a modular monolith
+*** Architecture quantum = 1 (everything deploys together)
+
+* Instability of UI module
+
+```
+Ca = 1 , Ce = 15
+
+𝐼 = 15 / 16 ≈ 0.94
+
+* Very unstable
+* Expected to change frequently
+* Safe to experiment
+```
+
+[NOTE]
+====
+* In this case (I) is high, but it does not mean its bad
+* It means UI should and can change rapidly
+* It cannot break other systems it calls since (Ca) is low
+====
+
+[CAUTION]
+====
+When UI instability becomes a problem
+
+* Business rules leak into UI
+
+* Orders logic duplicated in UI
+
+* Backend refactors break UI constantly
+====
+
+* When should the monolith bread ?
+** UI wants to release daily
+** Backend releases monthly
+** Teams block each other
+** UI changes shouldn’t redeploy backend
+
+== Final word
+
+Architecture quantum is the smallest unit that can change, deploy, and scale independently.
+
+Coupling determines how big that unit must be.
+
+Instability (I) tells you where change wants to happen inside that unit.
+
+Good architecture doesn’t minimize quanta, coupling, or instability — it aligns them with business change.
+
+=== Distilled core concepts
+
+==== Architecture Quantum
+
+* Smallest independently evolving unit
+
+* Defined by deployment + data + versioning + failure
+
+* A system can have 1 monolith and multiple quanta
+
+* Microservices = many small quanta, not “higher quantum”
+
+----
+Quantum is about independence, not code structure
+----
+
+==== Quantum of Coupling
+
+* Smallest set of components forced to move together
+
+* Caused by:
+
+** shared databases
+
+** synchronous calls
+
+** shared transactions
+
+** unversioned contracts
+
+* Coupling defines the minimum possible quantum
+
+----
+You cannot architect around coupling — only remove or accept it
+----
+
+==== Instability (I)
+
+* From Agile Software Development, Principles, Patterns, and Practices
+
+* High I → easy to change
+
+* Low I → hard to change (many depend on it)
+
+----
+Instability is not bad — misplaced instability is
+----
+
+=== Some rules to follow
+
+* Rule 1: Don’t optimize the number of quanta
+
+** Optimize coordination cost, not architecture fashion.
+** Quantum = 1 is often correct.
+
+* Rule 2: Instability should flow outward
+
+----
+Core domain → stable
+Application → semi-stable
+UI / adapters → unstable
+----
+
+* Rule 3 : High instability + high afferent coupling is a red flag
+
+* Rule 4: Microservices reduce coordination, not dependency
+
+* Rule 5: Start with quantum = 1, earn the split
+
+* Rule 7: Stability is a responsibility
+
+** Stable modules must change carefully
+
+** Unstable modules are where experimentation belongs
+
+
+
+
+
+
+
+
