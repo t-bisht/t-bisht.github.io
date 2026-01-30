@@ -1,174 +1,123 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Tushar Bisht — Software Engineer</title>
-    <meta name="description"
-          content="Tushar Bisht — software engineer building data platforms, dashboards and thoughtful software."/>
-    <meta name="theme-color" content="#0f1724"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/index_styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tushar Bisht - Portfolio</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<a class="skip" href="#main" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">Skip
-    to content</a>
+<div class="min-h-screen">
+    <!-- Animated Grid Background -->
+    <div class="grid-background"></div>
 
-<header class="container">
-    <div class="topbar">
-        <div class="brand" aria-hidden="true">
-            <div class="avatar">TB</div>
-            <div>
-                <div style="display:flex;align-items:baseline;gap:8px">
-                    <div style="font-weight:700">Tushar Bisht</div>
-                    <div style="color:var(--muted);font-size:.9rem">Software Engineer</div>
-                </div>
-                <div class="subtitle">I build data platforms, dashboards, and thoughtful software.</div>
-            </div>
-        </div>
+    <!-- Gradient Orbs -->
+    <div class="gradient-orb orb-top"></div>
+    <div class="gradient-orb orb-bottom"></div>
 
-        <div class="controls" role="toolbar" aria-label="site controls">
-            <button id="themeToggle" class="btn" aria-pressed="false" title="Toggle dark mode">Toggle Theme</button>
-            <a class="btn primary" href="mailto:youremail@example.com">Contact</a>
-        </div>
-    </div>
-    <!-- hero moved into main 'About' section -->
-</header>
-
-<main id="main">
-    <section id="about" class="container">
-        <div class="hero">
-            <div class="card profile">
-                <div>
-                    <h1>Hi, I’m Tushar <span aria-hidden="true">👋</span></h1>
-                    <p class="subtitle">Designing reliable data systems and intuitive frontends for complex
-                        problems.</p>
-                </div>
-
-                <div>
-                    <h3 style="margin:8px 0 6px">Skills</h3>
-                    <div class="skills">
-                        <span class="pill">Python</span>
-                        <span class="pill">BigQuery</span>
-                        <span class="pill">React</span>
-                        <span class="pill">SQL</span>
-                        <span class="pill">Cloud</span>
+    <div class="content-wrapper">
+        <!-- Header -->
+        <header class="header">
+            <div class="container">
+                <div class="header-content">
+                    <div class="header-left">
+                        <div class="pulse-dot"></div>
+                        <span class="header-text">portfolio.init()</span>
+                    </div>
+                    <div class="header-right">
+                        @web
                     </div>
                 </div>
             </div>
+        </header>
 
-            <aside class="card contact" aria-labelledby="about-heading">
-                <h2 id="about-heading" style="margin-top:0">About</h2>
-                <p style="margin:8px 0;color:var(--muted)">
-                    Software engineer focused on data systems, cloud platforms, and building clean, intuitive interfaces
-                    for complex problems. I enjoy working at the intersection of engineering, data, and design.
-                </p>
-                <div style="margin-top:10px;font-size:.95rem;color:var(--muted)">
-                    <div><strong class="highlight">Open to:</strong> Full-time roles, contracting</div>
-                    <div style="margin-top:8px"><strong class="highlight">Location:</strong> Remote / India</div>
-                </div>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="terminal-prompt">
+                        <span class="prompt-symbol">$</span>
+                        <span class="prompt-text">whoami</span>
+                    </div>
+                    <h1 class="hero-title">Tushar Bisht</h1>
+                    <p class="hero-subtitle">
+                        Developer <span class="cyan-text">&&</span> Tech Enthusiast
+                    </p>
+                    <p class="hero-description">
+                        Passionate about building scalable web applications and sharing knowledge through writing.
+                        Specializing in React, Node.js, and cloud architecture.
+                    </p>
 
-                <div style="margin-top:12px">
-                    <h4 style="margin:8px 0">Connect</h4>
-                    <div class="social-links" role="navigation" aria-label="Social links">
-                        <a class="btn" href="https://github.com/your-username" target="_blank" rel="noopener noreferrer"
-                           aria-label="GitHub">
-                            <!-- GitHub SVG -->
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.22 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+                    <!-- Social Links -->
+                    <div class="social-links" id="socialLinks"></div>
+
+                    <!-- Resume Download -->
+                    <div class="resume-section">
+                        <a href="/resume.pdf" download class="resume-button">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                 stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
                             </svg>
-                            <span style="margin-left:8px">GitHub</span>
-                        </a>
-
-                        <a class="btn" href="https://linkedin.com/in/your-handle" target="_blank"
-                           rel="noopener noreferrer" aria-label="LinkedIn">
-                            <!-- LinkedIn SVG -->
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4zM9 8h3.8v2.2h.1c.5-.9 1.8-1.8 3.7-1.8 4 0 4.7 2.6 4.7 6V24h-4v-7.2c0-1.7 0-3.9-2.4-3.9-2.4 0-2.8 1.9-2.8 3.8V24H9z"></path>
-                            </svg>
-                            <span style="margin-left:8px">LinkedIn</span>
-                        </a>
-
-                        <a class="btn" href="https://yourblog.wordpress.com" target="_blank" rel="noopener noreferrer"
-                           aria-label="WordPress">
-                            <!-- Blog / WordPress SVG (generic) -->
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm4.46 7.21c.31.62.54 1.3.67 1.99H7.87c.14-.66.39-1.31.74-1.92 1.29-2.25 2.67-3.32 4.72-3.32 1.85 0 3 .88 3.17 3.25zM6.23 15.1c-.24-.47-.42-1-.54-1.53h10.62c-.1.55-.27 1.08-.5 1.56-.95 1.86-3.01 2.86-5.58 2.86-2.56 0-4.36-.87-4.99-2.89zM12 4.5c-1.26 0-2.26.57-3.12 1.77-.34.47-.62 1-.84 1.53h7.91c-.21-.55-.5-1.08-.85-1.56C14.23 5.07 13.27 4.5 12 4.5z"></path>
-                            </svg>
-                            <span style="margin-left:8px">Blog</span>
-                        </a>
-
-                        <a class="btn" href="https://x.com/your-handle" target="_blank" rel="noopener noreferrer"
-                           aria-label="X">
-                            <!-- X / Twitter SVG -->
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                                <path d="M23 3.01a10.9 10.9 0 01-3.14.86 4.48 4.48 0 001.98-2.48 9.06 9.06 0 01-2.86 1.1A4.52 4.52 0 0016.11 2c-2.5 0-4.52 2.01-4.52 4.5 0 .35.04.7.12 1.03A12.83 12.83 0 013 3.15a4.48 4.48 0 00-.61 2.27c0 1.56.8 2.94 2.02 3.74a4.5 4.5 0 01-2.05-.56v.06c0 2.18 1.53 4 3.56 4.41-.37.1-.76.16-1.16.16-.28 0-.56-.03-.83-.08.56 1.74 2.18 2.98 4.1 3.01A9.07 9.07 0 012 19.54 12.8 12.8 0 008.29 21c7.55 0 11.7-6.48 11.7-12.1 0-.18-.01-.36-.02-.54A8.6 8.6 0 0023 3.01z"></path>
-                            </svg>
-                            <span style="margin-left:8px">X</span>
+                            <span>download_resume.pdf</span>
                         </a>
                     </div>
                 </div>
-            </aside>
-        </div>
-    </section>
+            </div>
+        </section>
 
-    <section id="projects" class="container">
-        <h2>Projects</h2>
-        <div class="projects-grid" role="list">
-            <article class="card project" role="listitem">
-                <h3>📊 Investment Insights Platform</h3>
-                <p>A dashboard that tracks mutual funds and equities by analyzing portfolio disclosures and sector
-                    allocations.</p>
-                <div class="meta">Tech: Python · BigQuery · React</div>
-                <div style="margin-top:10px"><a class="link" href="https://github.com/your-username/project-repo"
-                                                target="_blank" rel="noopener noreferrer">View Project →</a></div>
-            </article>
-
-            <article class="card project" role="listitem">
-                <h3>⚙️ Data Pipeline Test Framework</h3>
-                <p>Regression testing framework for validating data pipelines using configuration-driven test
-                    definitions.</p>
-                <div class="meta">Tech: Python · SQL · Cloud Storage</div>
-                <div style="margin-top:10px"><a class="link" href="https://github.com/your-username/project-repo"
-                                                target="_blank" rel="noopener noreferrer">View Project →</a></div>
-            </article>
-        </div>
-    </section>
-
-    <section id="blogs" class="container">
-        <h2>Writing & Blogs</h2>
-        <p style="color:var(--muted)">Here are places I publish writing and essays — I'll keep this list updated as
-            posts go live.</p>
-        <ul class="links">
-            <li><a class="link" href="https://medium.com/@your-handle" target="_blank" rel="noopener noreferrer">Medium
-                Blog</a></li>
-            <li><a class="link" href="https://dev.to/your-handle" target="_blank" rel="noopener noreferrer">Dev.to
-                Articles</a></li>
-            <li><a class="link" href="https://yourblog.wordpress.com" target="_blank" rel="noopener noreferrer">WordPress
-                / Personal Blog</a></li>
-            <li>
-                <a class="link" href="/blogs/chapter_2.html" target="_self" rel="noopener">Coupling in Software
-                    Architectures</a>
-                <div style="color:var(--muted);font-size:.95rem">An essay on coupling, cohesion and practical patterns
-                    for reducing accidental coupling.
+        <!-- Projects Section -->
+        <section class="projects">
+            <div class="container">
+                <div class="section-header">
+                    <div class="header-line left"></div>
+                    <h2 class="section-title cyan">
+                        <span class="tag-open">&lt;</span><span class="white-text">Git Projects</span><span
+                            class="tag-close"> /&gt;</span>
+                    </h2>
+                    <div class="header-line right"></div>
                 </div>
-            </li>
-        </ul>
-    </section>
-</main>
 
-<footer class="container footer">
-    <div style="display:flex;gap:12px;align-items:center">
-        <a href="https://github.com/your-username" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://linkedin.com/in/your-handle" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="mailto:youremail@example.com">Email</a>
+                <div class="projects-grid" id="projectsGrid"></div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section class="blog">
+            <div class="container">
+                <div class="section-header">
+                    <div class="header-line left purple"></div>
+                    <h2 class="section-title purple">
+                        <span class="tag-open">&lt;</span><span class="white-text">Blog</span><span class="tag-close"> /&gt;</span>
+                    </h2>
+                    <div class="header-line right purple"></div>
+                </div>
+
+                <div class="blog-list" id="blogList"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-left">
+                        <span class="copyright">©</span>
+                        <span>2026 Tushar Bisht</span>
+                    </div>
+                    <div class="footer-right">
+                        <span class="text-gray">Built with</span>
+                        <span class="cyan-text">React</span>
+                        <span class="text-gray">&</span>
+                        <span class="purple-text">Tailwind CSS</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-    <div style="color:var(--muted);font-size:.9rem">© <span id="year"></span> Tushar Bisht</div>
-</footer>
+</div>
 
-<script src="js/index_js.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>
-```
