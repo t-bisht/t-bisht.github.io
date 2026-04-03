@@ -5,7 +5,16 @@
 
 == Introduction
 
-* Coupling :
+In most architectural designs, best practices and sessions, you would be hearing a lot about "Architectural Coupling", aiming for that perfect modular architecture, and god knows how many times have you suggested, dodged, or told about "Microservice" !!
+
+Dont get me wrong, I am not bashing the terms or the intent they are suggested over and over in our meeting rooms, but I am trying to throw some basic questions at you - * What is de-coupling in architecture ?
+* How do you measure coupling in architecture ?
+* When should be plan to decouple ?
+
+In this blog entry I plan to explore these concepts, and add some metrics to it.
+
+* What is coupling in software architecture ? :
+
 ** Two software modules or subsystems are coupled (tightly or loosely) if changes in module 1 impacts module 2 or vice versa
 ** Coupling arises (or is reduced) by bounded context based domain driven design
 ** Coupling is one of the aspects defined and resolved using https://en.wikipedia.org/wiki/Architecture_tradeoff_analysis_method[Architecture Tradeoff Analysis Method] (ATAM)]
