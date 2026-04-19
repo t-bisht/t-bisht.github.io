@@ -1,0 +1,88 @@
+[cols="1,2,3", options="header"]
+|===
+| Category | Command | Description
+
+| Start
+| `docker compose up`
+| Start services (foreground)
+
+| Start (detached)
+| `docker compose up -d`
+| Start services in background
+
+| Stop
+| `docker compose down`
+| Stop and remove containers
+
+| Reset (⚠ data loss)
+| `docker compose down -v`
+| Remove containers and volumes
+
+| Restart
+| `docker compose restart`
+| Restart running services
+
+| Logs
+| `docker compose logs`
+| Show logs
+
+| Live logs
+| `docker compose logs -f`
+| Stream logs in real-time
+
+| Service logs
+| `docker compose logs -f postgres`
+| Logs for specific service
+
+| Status
+| `docker compose ps`
+| List running containers
+
+| Shell
+| `docker compose exec postgres sh`
+| Open shell inside container
+
+| Postgres CLI
+| `docker compose exec postgres psql -U user -d db`
+| Open psql
+
+| Build
+| `docker compose up --build`
+| Rebuild and start services
+
+| Force recreate
+| `docker compose up -d --force-recreate`
+| Recreate containers
+
+| Renew volumes
+| `docker compose up -d --renew-anon-volumes`
+| Reset anonymous volumes
+
+| List volumes
+| `docker volume ls`
+| Show all volumes
+
+| Inspect volume
+| `docker volume inspect <name>`
+| View volume details
+
+| Remove volume
+| `docker volume rm <name>`
+| Delete a volume
+
+| Cleanup
+| `docker system prune`
+| Remove unused resources
+
+| Custom file
+| `docker compose -f my.yml up -d`
+| Use custom compose file
+
+| Multiple files
+| `docker compose -f base.yml -f dev.yml up -d`
+| Combine multiple configs
+
+| Env variable
+| `COMPOSE_FILE=my.yml docker compose up -d`
+| Set default compose file
+|===

@@ -1,0 +1,5 @@
+https://realpython.com/python-gil/
+https://realpython.com/python-parallel-processing/
+https://realpython.com/python-concurrency/
+https://realpython.com/ref/best-practices/concurrency/
+https://realpython.com/ref/stdlib/threading/
