@@ -1,0 +1,22 @@
+Q what is flyway ?
+Flyway is a database migration tool. It manages changes to your database schema over time in a controlled, versioned way.
+
+  The problem it solves:
+
+  When your app evolves, you need to create tables, add columns, change indexes etc. You can't just manually run SQL on every server — you'd lose track of what's been applied where.
+
+  How it works:
+
+  You write numbered SQL files called migrations:
+  db/migration/
+    V1__create_user_login.sql
+    V2__add_email_index.sql
+    V3__add_profile_table.sql
+
+  On startup, Flyway checks which migrations have already run (it tracks this in a flyway_schema_history table) and runs any new ones automatically.
+
+  In your case:
+
+  Every time art-user-engine starts, Flyway runs before the app is ready. It connects to MySQL and applies any pending migration scripts — so your schema is always in sync with your code, without you doing anything manually.
+
+

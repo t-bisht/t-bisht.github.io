@@ -1,0 +1,47 @@
+Q: what is CORS and its setting in the docker compose file
+
+The problem CORS solves:
+
+  When your browser loads the frontend (e.g. http://localhost:3000), and that page makes an API call to a different address (e.g. http://localhost:8082), the browser blocks it by default for security. This is called the
+  same-origin policy.
+
+  To allow it, the backend (art-user-engine) must explicitly say: "I trust requests coming from http://localhost:3000" — that's what CORS_ALLOWED_ORIGINS does.
+
+  ---
+  Your stack:
+
+  Browser → http://localhost:3000  (frontend, React)
+               ↓ API calls
+            http://localhost:8082  (art-user-engine, Java)
+
+  The frontend origin is http://localhost:3000, so the backend must have:
+  CORS_ALLOWED_ORIGINS=http://localhost:3000
+
+  ---
+  When you deploy to a VM:
+
+  Browser → http://192.168.1.100  (nginx serves frontend on port 80)
+               ↓ API calls
+            http://192.168.1.100/api  (nginx proxies to art-user-engine)
+
+  Now the frontend origin is http://192.168.1.100, so you'd need:
+  CORS_ALLOWED_ORIGINS=http://192.168.1.100
+
+  ---
+  Short answer: http://localhost:3000 is correct for local development. You only need to change it when deploying to a real server — set it to whatever URL users open in their browser.
+
+
+  Q2: ⏺ No. art-user-engine is a Docker-internal hostname — only other containers can reach it. The browser has no idea it exists.
+
+  CORS is about what the browser sees in the address bar, not internal Docker networking.
+
+  When Docker Compose is running:
+
+  Browser opens → http://localhost  (nginx on port 80)
+                       ↓  (nginx internally proxies to art-user-engine:8082)
+                    art-user-engine  ← browser never sees this
+
+  So CORS_ALLOWED_ORIGINS should be what the browser loads the frontend from:
+
+  - Local machine with Compose → http://localhost
+  - VM deployment → http://<vm-ip> or https://<your-domain>

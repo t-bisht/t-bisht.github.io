@@ -1,0 +1,10 @@
+Q: why gradle wrapper (asked when I was building the image)
+    Run it from the art-microservices root:
+
+      cd /Users/obake/codebase/art/art-microservices
+      gradle wrapper --gradle-version 8.8
+
+      Why: ./gradlew is a wrapper script that downloads and runs Gradle without requiring it installed globally. It needs a gradle-wrapper.jar file to bootstrap itself — that JAR
+      is typically committed to the repo but it's missing here. Running gradle wrapper (using your system Gradle) regenerates it.
+
+      You only need to do this once. After that ./gradlew works on its own.

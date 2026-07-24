@@ -1,0 +1,62 @@
+Q: how does docker compose assign physical volume to mysql , how do I find the location
+    Docker manages it internally — it's not a path you choose. Run this to find it:
+
+      docker volume inspect art-mysql-data
+
+      You'll see something like:
+      "Mountpoint": "/var/lib/docker/volumes/art-mysql-data/_data"
+
+      That's the actual path on your machine where the MySQL files live. On Mac with Docker Desktop it's inside the Docker Desktop VM, not directly on your filesystem — so you can't browse it in Finder.
+      You'd need to go through Docker to access it.
+
+      If you'd rather have it at a specific path on your machine (e.g. ~/arthasetu/mysql-data), we can switch to a bind mount instead:
+
+      volumes:
+        - ~/arthasetu/mysql-data:/var/lib/mysql
+
+      That maps directly to a folder you can see and control. Want to switch to that?
+
+Q: re running only certain deployment in docker compose
+
+You only need to redeploy art-user-engine — MySQL and art-web are unaffected.
+
+  But since this is a code change, you need to rebuild the image first, then restart just that container:
+
+  1. Rebuild the image (wherever you build it):
+  ./gradlew :art_user_engine:bootJar
+  docker build -t obake/art-user-engine:latest ./art_user_engine
+  docker push obake/art-user-engine:latest
+
+  2. Pull and restart only that service:
+  docker compose pull art-user-engine
+  docker compose up -d art-user-engine
+
+  MySQL and art-web keep running untouched.
+
+
+Q: bringing down the composer instance
+ Fix — reset the MySQL data volume:
+
+  docker compose down -v        # stops all containers AND deletes the mysql data volume
+  docker compose up -d          # starts fresh — MySQL recreates the DB and user correctly
+
+ Q: combining pull and deploy in composer
+    docker compose pull art-web && docker compose up -d art-web
+
+
+ == Docker cool commands
+
+ * docker ps -a --filter volume=arthasetu_self_hosted_art-mysql-data - finding container attached to a volume
+ *  docker compose config --services
+ * docker compose up -d
+ * docker compose down
+
+ *  docker compose up -d art-ofelia - sample to restart a docker image once some properties are changed
+
+    ( Compose substitutes ${STAGER_CRON:-0 2 * * *} into the label at container-start. Ofelia re-reads labels on start.)
+
+ * # Run docker without sudo
+  sudo usermod -aG docker $USER
+  newgrp docker : this was helpful in linux since docker was running only via sudo
+
+* restarting : docker compose up -d --force-recreate art-ofelia

@@ -1,0 +1,44 @@
+:sectnums:
+:toc:
+
+= Caching : Basics
+
+== Caching Patterns
+
+=== External Cache
+
+* Maintained by 3rd party system - Redis
+* sync with database
+
+=== In-Process Caching
+
+* Cache on VM
+
+=== Content cachine - CDN
+
+* Location based caching
+
+=== Client side caching
+
+* HTTP cache browser
+* Data stored in mobile devices, apps etc
+
+== Caching Architectures
+
+=== Cache aside
+
+* app -> cache (external)
+* app -> db in case of miss
+** -> updates cache in when items found in database
+
+=== Write through cache
+
+app -> cache -> DB
+
+* app writes to cache
+* cache
+
+
+
+
+
