@@ -46,10 +46,10 @@ const projects = [
 
 const blogs = [
   {
-    title: 'Understanding coupling in software architecture',
-    date: '2026.01.20',
-    url: 'blogs/chapter_2.html',
-    readTime: '8 min',
+    title: 'All about JWT',
+    date: '2026.08.09',
+    url: 'blogs/all_about_jwt.html',
+    readTime: '10 min',
   },
 //  {
 //    title: 'Understanding React Server Components',

@@ -1,6 +1,12 @@
-= All about JWT (Json Web Token)
+= Quirky Notes : All about JWT (Json Web Token)
 :toc:
 :sectnums:
+
+[NOTE]
+====
+Quirky notes series are my web logs on topics I experiment on.
+They are not very tidy, but they try to answer questions around the topic I am researching
+====
 
 == Introduction
 
