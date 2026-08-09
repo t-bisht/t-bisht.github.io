@@ -30,6 +30,13 @@ const projects = [
     tech: ['Python', 'Spark', 'Oracle', 'Java', 'React'],
     status: 'Under - Development',
   },
+  {
+    title: 'Hiemdall',
+    description: 'Centralized auth server for portfolio apps. Google OAuth login, JWT session issuance, and token lifecycle management behind a single sign-on gateway.',
+    tech: ['Java 21', 'Spring Boot 3', 'Gradle', 'Docker', 'OAuth2', 'JWT'],
+    status: 'Active',
+    url: 'https://github.com/t-bisht/hiemdall',
+  },
 //  {
 //    title: 'AI-Powered Analytics Dashboard',
 //    description: 'Developed an analytics platform with machine learning insights for business intelligence and data visualization.',
@@ -109,8 +116,13 @@ function renderProjects() {
   const container = document.getElementById('projectsGrid');
   
   projects.forEach(project => {
-    const card = document.createElement('div');
+    const card = document.createElement(project.url ? 'a' : 'div');
     card.className = 'project-card';
+    if (project.url) {
+      card.href = project.url;
+      card.target = '_blank';
+      card.rel = 'noopener noreferrer';
+    }
     
     // Status
     const status = document.createElement('div');
