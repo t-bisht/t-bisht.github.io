@@ -1,0 +1,32 @@
+
+# Google OAUTH - How Sign-In with Google works
+
+
+
+== Workflows for implementing
+
+
+
+
+
+
+## Setup work required at GCP level
+
+
+## Side Notes
+
+### Verified email
+
+- An account creation does not mean that email can be verified
+- It can mean a user with an un-verified email can get a login and do some activity
+- To allow only verified email to enter the system
+- When google sends back the response post authentication it would send if email is verfied as payload along with sub ID
+- sub ID can be the account identifier
+- and we should check the email is veified or not to proceed
+
+
+
+## Notes tracker
+
+- difference between web and desktop app
+- application credentials json content

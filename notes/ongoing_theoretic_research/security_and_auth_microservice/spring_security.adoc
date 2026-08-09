@@ -1,0 +1,15 @@
+= Blog Notes : Spring Security
+
+
+== Rough notes
+
+```
+Phase 5 — Spring Security auto-config (lines 15–17)
+  Using generated security password: f9d4787e-6543-...
+  Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+  - This is loud but not what it looks like. Spring Security's UserDetailsServiceAutoConfiguration sees you have no UserDetailsService / AuthenticationProvider / AuthenticationManager bean of your own, so it creates a fallback in-memory user (user /
+  <generated password>) as a safety net.
+  - Your SecurityConfig bean does load — the SecurityFilterChain you provided is what actually decides who can hit what. The in-memory user is irrelevant because /api/auth/** is permitAll().
+  - The generated password only matters for endpoints not covered by your permitAll() rules — which right now is nothing user-facing. Worth suppressing to reduce log noise — see below.
+
+```

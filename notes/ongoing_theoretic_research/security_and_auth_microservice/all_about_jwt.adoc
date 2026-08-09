@@ -1,0 +1,383 @@
+= All about JWT (Json Web Token)
+:toc:
+:sectnums:
+
+== Introduction
+
+* JWT are cryptographically signed token from an authorization server
+* They are stateless and are used to validate if the request is coming from a genuine authenticated user, without asking AUTH server or accessing any database
+* JWT are payloads which are
+** Encoded (Base64 URL) encoded
+** They contain a signature that authenticates their validity (not tampered with)
+
+=== What happened before JWT
+
+* User creates a user profile
+* The auth server generates a token that is stored in the database
+* Once the token is passed to sub services, they need auth server to validate the token (which also means a database hit)
+* The design requires a lot to scale and also a great dependency on auth server and the database
+
+=== What changes JWT bought in
+
+* Since JWT tokens are stateless, sub services do not have to call auth server to validate
+
+[plantuml]
+----
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(user, "User", "App User")
+Container(web, "Web", "User interface")
+Container(lg,"Login services","Login and user management services")
+Container(auth,"Auth Server","Authentication server","Contains a private key")
+
+ContainerDb(db, "Database", "App DB")
+
+Container(ss,'Sub-Service','downstream engine')
+
+
+
+
+Rel(user, web, 'create_account')
+Rel(web,lg, 'create_account')
+Rel(lg, auth, 'generate_JWT')
+Rel(lg,db,'save login info (no token saved)')
+
+Rel(auth,lg,'JWT')
+Rel(lg,web, 'JWT cookie')
+
+Rel(web,ss,'service_call(with JWT)')
+Rel(ss,web,'response_post_auth(based on public key)')
+@enduml
+----
+
+== Components of JWT
+
+* Header
+** Information (metadata) about token
+** Algorithm used for generating the signature
+** type(JWT)
+* Payload
+** Claims data
+*** issuer
+*** sub (userID)
+*** audience
+*** expiry (and others)
+** Is encoded and not encrypted
+* Signature
+** Tamper check
+
+=== Example
+
+----
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+.
+eyJzdWIiOiIxMjMiLCJuYW1lIjoiSm9obiIsInJvbGUiOiJhZG1pbiJ9
+.
+SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+----
+
+== How an AUTH server generates JWT
+
+* Validate credentials (database call)
+* Fetch claims (this becomes payload)
+** What user is allowed to do ?
+** Other info
+** Expiry timestamp
+* Generate header
+** Choose the algo used for generation of signature
+*** HS-256
+*** RS-256
+* Generate signature
+** Chooses the algo (HS/RS-256)
+** Use Header + Payload to generate signature using algo
+* Generate final token body and return
+** The payload is encoded (Base64 URL) not encrypted
+
+=== Difference between HS/RS-256 signature generation algo
+
+* HMAS + SHA-256 (HS256)
+** Symmetric cryptography
+** One key used as both private and public
+*** Create the signature (private == Key1)
+*** Validate the signature (public == Key2)
+** Contains risk since if one engine leaks key the signature can be forged
+
+* RSA + SHA-256 (RS256)
+** Symmetric cryptography
+** Two keys used
+*** Private -> Generate signature
+*** Public -> Decrypt signature
+**** Remain sames for all the consumers
+** Lesser risk
+*** Even if public key is leaked new signature cannot be forged
+
+== How sub systems authenticate
+
+* Decode the payload
+* Verify the algo type (should match)
+* Verify(header+payload, publickey, signature)
+
+=== Additional checks
+
+* Correct expiry timestamp
+* Issuer
+* Token for the service (AUD)
+
+== Key Rotation
+
+=== Why rotate
+
+* Cryptographic keys weaken over time — longer a key lives, more tokens signed with it, bigger the blast radius if leaked
+* Compliance frameworks (SOC2, PCI-DSS) mandate periodic rotation
+* If private key leaks, attacker can forge JWTs for *every* user until key is revoked
+* Rotation limits damage window and forces attackers to re-compromise
+
+=== The core problem
+
+* JWTs are stateless — issued tokens live until `exp`
+* If you swap keys instantly, every in-flight token signed with old key breaks → mass logout
+* Need *overlap window*: old key valid for verification, new key used for signing
+
+=== The `kid` (Key ID) header
+
+* Each signing key is tagged with unique `kid` string (e.g. `"2026-07-key-01"`)
+* Auth server includes `kid` in JWT header when signing:
+
+[source,json]
+----
+{
+  "alg": "RS256",
+  "typ": "JWT",
+  "kid": "2026-07-key-01"
+}
+----
+
+* Sub-service reads `kid` before verifying, looks up matching public key from JWKS
+
+=== JWKS endpoint
+
+* Standard URL: `https://auth.example.com/.well-known/jwks.json`
+* Returns JSON array of active public keys:
+
+[source,json]
+----
+{
+  "keys": [
+    {
+      "kid": "2026-07-key-01",
+      "kty": "RSA",
+      "alg": "RS256",
+      "use": "sig",
+      "n": "0vx7agoebGcQSuu...",
+      "e": "AQAB"
+    },
+    {
+      "kid": "2026-04-key-01",
+      "kty": "RSA",
+      "alg": "RS256",
+      "use": "sig",
+      "n": "xGOr-H7A-Rr8-Xy...",
+      "e": "AQAB"
+    }
+  ]
+}
+----
+
+* Sub-services fetch JWKS on startup, cache it, refresh every N minutes
+
+=== Rotation flow (step by step)
+
+. *T0* — Generate new RSA keypair.
+Assign new `kid` (e.g. `2026-08-key-01`)
+. *T0* — Add new public key to JWKS endpoint alongside old key.
+Now JWKS returns *both* keys
+. *T0 + cache_ttl* — Wait for all sub-services to refresh JWKS cache and pick up new key.
+Critical — if you sign with new key before services see it, verification fails
+. *T1* — Auth server switches signing to new private key.
+New tokens carry new `kid`.
+Old tokens still verify against old public key
+. *T1 + max_token_lifetime* — All tokens signed with old key have expired.
+Safe to retire old public key from JWKS
+. *T2* — Remove old key from JWKS.
+Delete old private key from KMS
+
+=== Verification logic on sub-service
+
+[source,python]
+----
+def verify_jwt(token: str) -> dict:
+    header = decode_header(token)
+    kid = header["kid"]
+    alg = header["alg"]
+
+    if alg not in ALLOWED_ALGS:  # Pin allowed algorithms
+        raise InvalidToken("bad alg")
+
+    public_key = jwks_cache.get(kid)
+    if public_key is None:
+        jwks_cache.refresh()  # Force refresh on unknown kid
+        public_key = jwks_cache.get(kid)
+        if public_key is None:
+            raise InvalidToken("unknown kid")
+
+    return jwt.decode(token, public_key, algorithms=[alg])
+----
+
+=== Best practices
+
+* *Rotate on schedule* — every 30–90 days for signing keys
+* *Rotate immediately on suspected compromise* — do not wait for scheduled rotation
+* *JWKS cache TTL* — keep short (5–15 min) so new keys propagate fast
+* *Never reuse `kid`* — always mint new identifier per key
+* *Reject unknown `kid`* — after one JWKS refresh, if `kid` still not found → fail closed
+* *Store private keys in KMS/HSM* — never in env vars, config files, or Git
+* *Pin `alg` allowlist* — prevent `alg: none` and RS256→HS256 confusion attacks
+* *Log key usage* — track which `kid` signs how many tokens to catch anomalies
+* *Automate rotation* — manual rotation gets skipped.
+Use cron/scheduler
+
+== When NOT to use JWT
+
+JWT is a solid tool for stateless, distributed auth — but it is not a universal replacement for sessions.
+Use the wrong tool and you inherit problems that opaque sessions solved decades ago.
+
+=== Use opaque session tokens instead when...
+
+* *You need instant revocation* — logout, password change, account ban must take effect immediately.
+Stateless JWTs cannot be revoked mid-life without adding a database lookup (which defeats the point of JWT)
+* *You control both client and server* — monolith or single backend.
+Session ID in a cookie + Redis lookup is simpler, smaller, and revocable
+* *Payload contains sensitive data* — JWTs are Base64-encoded, not encrypted.
+Anyone with the token reads the claims.
+Use JWE (encrypted JWT) or keep sensitive data server-side
+* *User data changes frequently* — roles, permissions, plan tier baked into token stay stale until expiry.
+Session lookup always reads current state
+* *Small scale / low traffic* — the "no database hit" benefit does not matter.
+Complexity cost is not worth it
+* *Regulated environments* — some compliance frameworks require session termination on demand, which stateless JWT cannot guarantee
+
+=== Use JWT when...
+
+* Distributed microservices need to verify auth without hitting central auth server
+* Cross-domain SSO (OIDC ID tokens)
+* Third-party API access (short-lived access tokens)
+* Machine-to-machine auth where revocation is not critical
+
+== Challenges and Pitfalls
+
+=== Revocation is hard
+
+* Once issued, JWT is valid until `exp` — server has no way to invalidate
+* *Mitigations*:
+** Short access token TTL (5–15 min) + refresh tokens
+** Maintain a *blocklist* (Redis) of revoked `jti` values — but this adds statefulness
+** Token versioning — store `token_version` in DB per user, embed in JWT, reject if mismatch on critical routes
+
+=== `alg: none` attack
+
+* Attacker crafts a token with header `{"alg": "none"}` and no signature
+* Buggy libraries accept it as valid
+* *Fix*: server must maintain an *allowlist* of algorithms and reject anything else
+
+=== Algorithm confusion (RS256 → HS256)
+
+* Server expects RS256 (asymmetric).
+Attacker changes header to HS256 (symmetric)
+* Attacker signs token using the *public key as HMAC secret*
+* Server verifies with public key thinking it is HMAC → token accepted
+* *Fix*: pin exact algorithm server-side.
+Never let JWT header dictate verification algo
+
+=== Storing JWT on the client — no good option
+
+[cols="1,2"]
+|===
+| Storage | Vulnerability
+
+| `localStorage`
+| XSS — any injected script reads token
+
+| `sessionStorage`
+| XSS — same problem, worse lifecycle
+
+| Cookie (non-httpOnly)
+| XSS
+
+| Cookie (httpOnly + Secure + SameSite)
+| CSRF — mitigated with SameSite=Strict/Lax + CSRF tokens
+
+| In-memory (JS variable)
+| Lost on refresh, needs silent refresh flow
+|===
+
+* *Least-bad*: httpOnly + Secure + SameSite=Strict cookie for web apps
+
+=== Token size bloat
+
+* JWT includes header + payload + signature, all Base64-encoded
+* Typical JWT: 500 bytes – 2 KB
+* Sent on *every* request → bandwidth cost adds up
+* Some proxies/load balancers cap header size (8 KB default in nginx) — big JWTs get rejected
+* *Fix*: keep claims minimal.
+Do not stuff full user profile into token
+
+=== Clock skew across services
+
+* `exp` and `nbf` checked against local clock
+* If auth server and sub-service clocks drift, valid tokens get rejected or expired tokens accepted
+* *Fix*: run NTP everywhere.
+Allow small leeway (30–60s) in verification
+
+=== Trusting the header before verifying
+
+[source,python]
+----
+# BAD — trusts attacker-controlled header
+header = decode_header(token)
+key = fetch_key(header["kid"])
+jwt.decode(token, key, algorithms=[header["alg"]])  # attacker picks algo
+----
+
+* Verify signature first, then trust claims
+* Pin algo from server config, not from token header
+
+=== Refresh token theft
+
+* Refresh tokens live longer (days/weeks) → juicier target
+* If stolen, attacker gets fresh access tokens indefinitely
+* *Mitigations*:
+** Refresh token *rotation* — issue new refresh token on every use, invalidate old one
+** *Reuse detection* — if same refresh token used twice, revoke entire token family (probable theft)
+** Bind refresh token to device fingerprint / IP
+
+=== Sensitive data in payload
+
+* Payload is *encoded*, not *encrypted*
+* Anyone with the token (client, proxies, logs) can decode and read claims
+* Do not put PII, passwords, internal IDs, or secrets in JWT
+* If encryption needed → use *JWE* (JSON Web Encryption)
+
+=== Overlong expiry
+
+* "1 year expiry so users do not log out" → if token leaks, attacker has 1 year of access
+* Access tokens: *minutes*, not days
+* Long-lived sessions belong in refresh tokens (revocable) or session cookies
+
+=== Missing standard claim validation
+
+* Sub-services often verify signature but skip claim checks
+* *Always validate*:
+** `exp` — not expired
+** `nbf` — not used before valid time
+** `iss` — issued by expected auth server
+** `aud` — token intended for this service
+** `iat` — sanity check issue time
+
+=== JWT is not a session
+
+* JWT proves identity at a point in time.
+Sessions imply ongoing state
+* Do not use JWT to store shopping cart, form state, UI preferences
+* Keep JWT small and auth-focused.
+Push session state to server-side store
