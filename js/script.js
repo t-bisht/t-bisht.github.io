@@ -60,9 +60,9 @@ const blogs = [
   },
   {
       title: 'MicroBlog: Building Stash Part 1 :  Inception and Planning',
-      date: '2026.08.09',
-      url: 'blogs/all_about_jwt.html',
-      readTime: '10 min',
+      date: '2026.10.21',
+      url: 'blogs/stash_inception.html',
+      readTime: '5 min',
     }
 //  {
 //    title: 'Understanding React Server Components',
