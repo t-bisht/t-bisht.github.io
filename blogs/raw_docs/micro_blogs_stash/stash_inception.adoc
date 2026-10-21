@@ -1,0 +1,93 @@
+# Microblog : Building Stash Pt1 : Inception and Planning
+
+## The Idea
+
+What is STASH and Why I think it would be fun to build ?
+
+Well the reason is simple, almost all of us earning the hard buck would want to know how we are spending it ?
+It's not always about saving, it can also be about optimized spending.
+
+Some years ago we always were looking for apps that can manage our spends (can't even recall their names) they were perhaps perfect answer to the manual world.
+But a perfect manual world does not exist.
+Either you would have to be highly disciplined to log entry manually for all the spends that you have made in a day and continue it month over month just to share at your dashboards and eventually give up the marathon or like me, you would just give up in a couple of months.
+
+But then the era changed.
+With every delivery , purchase of inventory, retail or grocery we started getting to the digital world where our mailboxes became our digital ledgers.
+But you need to find someone to create the fancy dashboard for you.
+But then spend tracking is not just about reviewing fancy dashboard at the end of the month.
+Perhaps with enough data and purchase history I can optimize my spending or even optimize how I am paying for them so that I can make the most out of my credit cards (but I wander too far)
+
+Thus came the plan to create STASH (Smart Tracking Analysis and Spend Hub).
+I dont think I have thought this through to be a product to be launched.
+Perhaps I would be building this for myself first and take it for a ride.
+
+## What is STASH all about ?
+
+Idea currently is all simple in my head.
+I would want to collate most of my spends.
+This does not just extend to groceries, but also analyzing my card spends, UPI transactions so on and so forth.
+
+What I plan to do with that , I might not be able to tell you about this just yet , this is still an evolving thought.
+
+But one thing I have sorted is I have just one email where I get all my digital ledgers, and like most of us (atleast the normal one's) the mail is provided by GMAIL, which gives me rich access to my mail account (read-only).
+
+## How do I plan to build it ?
+
+The starting phase is going to be pretty simple (well not that simple either).
+I am going to make a DIY app , host it for free (on my internal LAN system) and use anything everything open source.
+This also includes free access to LLMs that I can get my hands on.
+
+At a very high level my system architecture would look something like this
+
+[plantuml]
+----
+@startuml Basic Sample
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+
+System_Boundary(c1, "STASH") {
+    Container(web_app, "Web Application", "User interface (a REACT based app)")
+    Container(service, "Analytical Engine", "serves user analytics - the core")
+    Container(ume, 'User Management Engine' , "Manages user login , auth and access token management")
+    Rel(web_app, ume, 'login_services')
+
+    ContainerDb(db,'Database','Transactional multipurpose database')
+    Rel_D(ume, db, 'user related detail CRUSOps')
+
+    BiRel_D(service, db, 'CRUD ops')
+    Rel_U(service, web_app, 'data')
+
+    Boundary(bke,'Backend Engines'){
+
+        Container(mscan, 'Scanning engine', 'Scans and downloads mails from various sources')
+        Container(pen, 'Parsing engine', 'Parses , pre-processes & structurizes content for storage and post processing')
+        Rel_U(mscan, ume, 'get access tokens')
+        Rel_R(mscan, pen , 'scanned content')
+
+    }
+
+    Lay_D(db,bke)
+
+}
+
+System_Ext(gmail,'GMAIL','Version 1 mail / notification sources')
+System_Ext(ollm,'Hosted LLMs','Public free hosted LLM points')
+
+Rel(mscan, gmail, 'scan mails restrictied to sources')
+Rel(pen, ollm, 'parse messages')
+Rel_U(pen,db,'store content')
+
+@enduml
+----
+
+Now that I think about it, the above diagram is a simplified vision of what I am trying to do, will elaborate as I further.
+
+## Do I see any challenges ?
+
+Right now , since this is a prototype, perhaps no.
+But a production and multi-user release, yes , I am not sure if Google will give the application access to scan user mails, but I am not very sure about it, applications like SafeSage and others scan the mailbox.
+PCI, PII and GDPR data also become a challenge.
+But well thing about these later.
+
+Until next time ... ciao
+
